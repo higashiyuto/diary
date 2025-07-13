@@ -1,115 +1,24 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>やることリスト</title>
-  <style>
-    .todo-list {
-      padding-left: 0;
-    }
-
-    .todo-list li {
-      list-style: none;
-      margin: 10px 0;
-      padding-left: 1em;
-      position: relative;
-    }
-
-    .todo-list li.checked::before {
-      content: "✅ ";
-      position: absolute;
-      left: 0;
-    }
-
-    .todo-list li.checked a {
-      text-decoration: line-through;
-      color: gray;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>ToDo</title>
 </head>
 <body>
-
-  <h2>やることリスト</h2>
+  <h2>毎日チェックリスト</h2>
   <ul class="todo-list">
-    <li data-id="task1">
-      <a href="https://chronus.mercury-group.co.jp/index.html#/puncher" class="todo-link" target="_blank">出勤 Chronus</a>
-    </li>
-    <li data-id="task2">
-      <a href="#" class="todo-link">出勤 e-staffing</a>
-    </li>
-    <li data-id="task3">
-      <a href="#" class="todo-link">ALADINログイン状況・業務時間外検索状況確認管理簿 印刷</a>
-    </li>
-    <li data-id="task4">
-      <a href="https://dcmonlinecommunity.my.site.com/partnersites/login/?ec=302&start" class="todo-link" target="_blank">個人実績管理(オンコミ)</a>
-    </li>
-    <li data-id="task5">
-      <a href="#" class="todo-link">[日締め件数確認用]契約時複数確認管理簿 記入</a>
-    </li>
-    <li data-id="task6">
-      <a href="#" class="todo-link">契約時複数確認管理簿</a>
-    </li>
-    <li data-id="task7">
-      <a href="https://chronus.mercury-group.co.jp/index.html#/puncher" class="todo-link" target="_blank">退勤 Chronus</a>
-    </li>
-    <li data-id="task8">
-      <a href="#" class="todo-link">退勤 e-staffing</a>
-    </li>
+    <li><a href="https://chronus.mercury-group.co.jp/index.html#/puncher" class="todo-link" target="_blank">出勤 Chronus</a></li>
+    <li><a href="#" class="todo-link">出勤 e-staffing</a></li>
+    <li><a href="#" class="todo-link">ALADINログイン状況・業務時間外検索状況確認管理簿 印刷</a></li>
+    <li><a href="https://dcmonlinecommunity.my.site.com/partnersites/login/?ec=302&start" class="todo-link" target="_blank">個人実績(オンコミ)</a></li>
+    <li><a href="#" class="todo-link">[日締め件数確認用]契約時複数確認管理簿 記入</a></li>
+    <li><a href="#" class="todo-link">契約時複数確認管理簿 記入</a></li>
+    <li><a href="https://chronus.mercury-group.co.jp/index.html#/puncher" class="todo-link" target="_blank">退勤 Chronus</a></li>
+    <li><a href="#" class="todo-link">退勤 e-staffing</a></li>
   </ul>
 
-  <script>
-    const storageKey = "checkedTasks";
-    const resetKey = "lastResetDate";
-
-    // 保存されているチェック状態を取得
-    const saved = JSON.parse(localStorage.getItem(storageKey)) || {};
-
-    // チェック状態を復元
-    document.querySelectorAll('.todo-list li').forEach(li => {
-      const id = li.dataset.id;
-      if (saved[id]) {
-        li.classList.add("checked");
-      }
-    });
-
-    // クリックイベント（チェックマークを付けて保存）
-    document.querySelectorAll('.todo-link').forEach(link => {
-      link.addEventListener('click', function (event) {
-        const href = link.getAttribute('href');
-        if (!href || href === "#") {
-          event.preventDefault(); // 空リンクなら遷移させない
-        }
-
-        const li = link.closest("li");
-        const id = li.dataset.id;
-
-        if (!li.classList.contains("checked")) {
-          li.classList.add("checked");
-          saved[id] = true;
-          localStorage.setItem(storageKey, JSON.stringify(saved));
-        }
-      });
-    });
-
-    // 24:00でlocalStorageをリセット（1分ごとにチェック）
-    function resetIfNeeded() {
-      const now = new Date();
-      const today = now.toISOString().slice(0, 10); // "YYYY-MM-DD"
-      const lastReset = localStorage.getItem(resetKey);
-
-      if (lastReset !== today) {
-        localStorage.removeItem(storageKey);
-        localStorage.setItem(resetKey, today);
-        
-        document.querySelectorAll('.todo-list li').forEach(li=>{
-          li.classList.remove("checked");
-        });
-      }
-    }
-
-    // 1分ごとに日付チェック
-    setInterval(resetIfNeeded, 60 * 1000);
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
